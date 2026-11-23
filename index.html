@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101c3a">
+  <title>كتابي الذكي | منصتك التعليمية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-art">
+      <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+      <div class="book-emoji">📚</div>
+      <span class="floating f1">✦</span><span class="floating f2">＋</span><span class="floating f3">∑</span>
+      <div class="art-copy"><span class="eyebrow">LEARN • EXPLORE • EXCEL</span><h1>مستقبلك يبدأ<br>من <em>صفحة</em></h1><p>كل كتبك، شروحاتك، واختباراتك في مكان واحد.</p></div>
+    </div>
+    <div class="auth-panel">
+      <div class="brand"><div class="brand-mark">ك</div><div><b>كتابي الذكي</b><small>منصتك التعليمية</small></div></div>
+      <div class="auth-content">
+        <span class="eyebrow dark">أهلاً بعودتك</span><h2>ابدأ رحلة التعلّم</h2><p class="muted">سجّل الدخول للوصول إلى مكتبتك التعليمية.</p>
+        <div class="auth-tabs"><button class="tab active" data-mode="email">البريد الإلكتروني</button><button class="tab" data-mode="phone">رقم الهاتف</button></div>
+        <form id="loginForm">
+          <label id="loginLabel" for="loginValue">البريد الإلكتروني</label>
+          <input id="loginValue" type="email" placeholder="name@example.com" autocomplete="email" required>
+          <button class="primary-btn full" type="submit" id="sendCode">إرسال رمز الدخول <span>←</span></button>
+        </form>
+        <form id="verifyForm" class="hidden">
+          <label for="otpValue">رمز التحقق</label><input id="otpValue" inputmode="numeric" maxlength="8" placeholder="أدخل الرمز الذي وصلك" required>
+          <button class="primary-btn full" type="submit">تأكيد الدخول <span>←</span></button>
+          <button class="text-btn" type="button" id="backLogin">تغيير وسيلة الدخول</button>
+        </form>
+        <div id="authMessage" class="message" role="status"></div>
+        <div class="secure-note"><span>🔒</span> تسجيل آمن • لا نطلب كلمة مرور منك</div>
+        <p class="setup-hint">للتشغيل الفعلي: أضف مفاتيح Supabase في ملف <code>config.js</code>.</p>
+      </div>
+      <footer>© 2026 كتابي الذكي</footer>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand side-brand"><div class="brand-mark">ك</div><div><b>كتابي الذكي</b><small>بوابتك للتميّز</small></div></div>
+      <div class="side-label">القائمة الرئيسية</div>
+      <button class="nav-link active" data-page="home"><span>⌂</span> الرئيسية</button>
+      <button class="nav-link" data-page="library"><span>▤</span> المكتبة التعليمية</button>
+      <button class="nav-link" data-page="tests"><span>✎</span> اختباراتي</button>
+      <div class="side-bottom"><div class="help-card"><span>💡</span><b>واصل التقدم!</b><small>كل درس تقرؤه يقربك من هدفك.</small></div><button id="logoutBtn" class="nav-link logout"><span>↪</span> تسجيل الخروج</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button id="menuBtn" class="menu-btn">☰</button><div class="crumb">منصتك التعليمية <span>/</span> <b id="pageCrumb">الرئيسية</b></div><div class="user-chip"><div class="avatar">ط</div><span id="userEmail">الطالب</span></div></header>
+      <section id="homePage" class="page">
+        <div class="welcome-banner"><div><span class="eyebrow">YOUR SMART LEARNING SPACE</span><h1>مرحباً بك في <em>كتابي الذكي</em> 👋</h1><p>اختر صفك، واستكشف موادك، وابدأ التفوق خطوة بخطوة.</p><button class="light-btn" id="browseBtn">استكشف المكتبة <span>←</span></button></div><div class="banner-graphic">🎓<div class="mini-book">📘</div></div></div>
+        <div class="section-heading"><div><span class="eyebrow dark">ابدأ من هنا</span><h2>اختر الصف الدراسي</h2><p class="muted">محتوى منظم حسب المرحلة والمواد العلمية.</p></div><span class="pill">3 مراحل تعليمية</span></div>
+        <div class="grade-grid" id="gradeGrid"></div>
+        <div class="section-heading lower"><div><h2>ماذا ستجد داخل كل مادة؟</h2><p class="muted">أربع أدوات تساعدك على الفهم والاستعداد للاختبارات.</p></div></div>
+        <div class="feature-grid">
+          <div class="feature"><div class="feature-icon blue">▤</div><b>الكتاب المدرسي</b><p>تصفح الدروس والموضوعات بترتيب المنهج.</p></div>
+          <div class="feature"><div class="feature-icon gold">✦</div><b>الكتاب المحلول</b><p>حلول وشروحات إضافية لمراجعة أفكار الدروس.</p><span class="mini-tag">مميز</span></div>
+          <div class="feature"><div class="feature-icon teal">▧</div><b>النماذج الوزارية</b><p>تدرب على نماذج وأسئلة السنوات السابقة.</p></div>
+          <div class="feature"><div class="feature-icon purple">✓</div><b>اختبار وزاري</b><p>اختبر مستواك واحصل على تصحيح ونتيجة.</p></div>
+        </div>
+      </section>
+      <section id="libraryPage" class="page hidden">
+        <div class="page-intro"><span class="eyebrow dark">SMART LIBRARY</span><h1 id="libraryTitle">المكتبة التعليمية</h1><p class="muted">اختر الصف ثم المادة للوصول إلى مواردك.</p></div>
+        <div class="toolbar"><button class="back-btn hidden" id="backBtn">→ رجوع</button><div class="search-wrap">⌕ <input id="searchInput" placeholder="ابحث عن مادة أو مورد..."></div></div>
+        <div id="libraryContent"></div>
+      </section>
+      <section id="testsPage" class="page hidden"><div class="page-intro"><span class="eyebrow dark">YOUR PROGRESS</span><h1>اختباراتي</h1><p class="muted">ستظهر هنا نتائج الاختبارات التي تجريها.</p></div><div class="empty-state"><div>📝</div><h3>لا توجد اختبارات بعد</h3><p>اختر مادة من المكتبة وابدأ اختبارك الأول.</p><button class="primary-btn" id="goLibrary">اذهب إلى المكتبة</button></div></section>
+      <footer class="app-footer">كتابي الذكي © 2026 <span>نتعلّم اليوم لنصنع الغد</span></footer>
+    </main>
+  </div>
+  <div id="resourceModal" class="modal hidden"><div class="modal-card"><button class="close-modal" id="closeModal">×</button><div class="modal-icon">📖</div><span class="eyebrow dark">مكتبة كتابي الذكي</span><h2 id="modalTitle">المورد التعليمي</h2><p id="modalText">سيتم عرض محتوى هذا القسم هنا عند إضافته.</p><div class="modal-actions"><button class="primary-btn" id="modalAction">حسناً</button></div></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="config.js"></script><script src="app.js"></script>
+</body></html>
